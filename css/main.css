@@ -387,7 +387,7 @@ div.tooltip {
 }
 
 div.tooltip:hover {
-	display: none !important;
+	display: none;
 }
 
 .disabled:hover > div.tooltip, .button.free:hover > div.tooltip {
@@ -581,4 +581,22 @@ body.noMask #description {
 
 #dropMenu > div:hover {
 	text-decoration: underline;
+}
+
+#topSlider {
+	border: 1px solid black;
+}
+
+#rangeItem {
+	clear: both;
+	float: right;
+}
+
+#rangeConfirm {
+	float: left;	
+}
+
+#rangeSlider {
+	position: relative;
+	width: 100px;
 }

@@ -35,6 +35,7 @@ var Button = {
 				costTooltip.appendTo(el);
 			}
 		}
+
 		
 		if(options.width) {
 			el.css('width', options.width);

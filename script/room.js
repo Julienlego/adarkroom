@@ -866,6 +866,7 @@ var Room = {
 					}
 				}
 			}
+			
 			if(tt.children().length > 0) {
 				tt.appendTo(el);
 			}
@@ -880,15 +881,19 @@ var Room = {
 		if(good.maximum <= numThings) {
 			return;
 		}
-		
+
 		var storeMod = {};
 		var cost = good.cost();
 		for(var k in cost) {
 			var have = $SM.get('stores["'+k+'"]', true);
+			// get slider num to buy more than one thing
+			var multiplier = $('#multiplier')[0].text;
+			console.log("asdfasdfa: " + multiplier);
 			if(have < cost[k]) {
 				Notifications.notify(Room, _("not enough " + k));
 				return false;
-			} else {
+			}
+			else {
 				storeMod[k] = have - cost[k];
 			}
 		}
@@ -932,6 +937,7 @@ var Room = {
 		var storeMod = {};
 		var cost = craftable.cost();
 		for(var k in cost) {
+			// console.log("debug: "+k);
 			var have = $SM.get('stores["'+k+'"]', true);
 			if(have < cost[k]) {
 				Notifications.notify(Room, _("not enough "+k));
@@ -1025,6 +1031,21 @@ var Room = {
 		if(buySection.length === 0 && $SM.get('game.buildings["trading post"]', true) > 0) {
 			buySection = $('<div>').attr('id', 'buyBtns').css('opacity', 0);
 			bNeedsAppend = true;
+			// make slider at top of buy section
+			var topSlider = $('<div>').addClass('topSlider');
+			var items = 2;
+			$("<div>").attr('id', 'multiplier').text(items).appendTo(topSlider);
+			var slider = $('<input>').attr({
+				id: 'rangeSlider',
+				type: 'range',
+				min: 1,
+				max: 10,
+				step: 1,
+				value: 2
+			}).appendTo(topSlider);
+			slider.css("width", "75px");
+			$("<div>").attr('id', 'rangeConfirm').text("+").appendTo(topSlider);
+			topSlider.appendTo(buySection);
 		}
 		
 		for(var k in Room.Craftables) {
@@ -1072,7 +1093,8 @@ var Room = {
 						cost: good.cost(),
 						text: _(k),
 						click: Room.buy,
-						width: '80px'
+						width: '80px',
+						slider: true
 					}).css('opacity', 0).attr('buildThing', k).appendTo(buySection).animate({opacity:1}, 300, 'linear');
 				}
 			} else {
@@ -1094,7 +1116,8 @@ var Room = {
 				Button.setDisabled(good.button, false);
 			}
 		}
-		
+				
+				
 		if(needsAppend && buildSection.children().length > 0) {
 			buildSection.appendTo('div#roomPanel').animate({opacity: 1}, 300, 'linear');
 		}
